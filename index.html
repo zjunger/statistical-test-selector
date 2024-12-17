@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Statistical Test Selector</title>
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    p {
+      text-align: center;
+      color: #555;
+    }
+
+    .question {
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    select {
+      width: 100%;
+      padding: 8px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #result {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 4px;
+      display: none;
+    }
+
+    #result h2 {
+      margin-top: 0;
+      color: #333;
+    }
+
+    .examples, .normality, .testing-goals {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #f1f1f1;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .examples h3, .normality h3, .testing-goals h3 {
+      margin-top: 0;
+      font-size: 18px;
+    }
+
+    .examples p, .normality p, .testing-goals p {
+      margin: 5px 0;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Statistical Test Selector</h1>
+    <p>Answer the following questions to determine the appropriate statistical test for your data.</p>
+
+    <form id="test-form">
+      <div class="question">
+        <label for="data-type">1. What type of data do you have?</label>
+        <select id="data-type">
+          <option value="categorical">Categorical</option>
+          <option value="continuous">Continuous</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <label for="num-groups">2. How many groups are you comparing?</label>
+        <select id="num-groups">
+          <option value="two">Two groups</option>
+          <option value="more-than-two">More than two groups</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <label for="distribution">3. Is your data normally distributed?</label>
+        <select id="distribution">
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <label for="test-goal">4. What is your goal?</label>
+        <select id="test-goal">
+          <option value="differences">Testing for differences</option>
+          <option value="relationships">Testing for relationships</option>
+          <option value="association">Testing for association</option>
+        </select>
+      </div>
+
+      <button type="button" onclick="determineTest()">Get Recommended Test</button>
+    </form>
+
+    <div id="result">
+      <h2>Recommended Test:</h2>
+      <p id="test-name">Please complete the form to get the recommended test.</p>
+    </div>
+
+    <!-- Example Section -->
+    <div class="examples">
+      <h3>Examples of Continuous and Categorical Data:</h3>
+      <div>
+        <h4>Continuous Data:</h4>
+        <p>Continuous data refers to data that can take any value within a given range. It is measurable and can be represented on a scale.</p>
+        <ul>
+          <li>Height (e.g., 170 cm, 5.7 ft)</li>
+          <li>Weight (e.g., 65 kg, 140 lbs)</li>
+          <li>Temperature (e.g., 22°C, 72°F)</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Categorical Data:</h4>
+        <p>Categorical data refers to data that can be divided into specific categories or groups that do not have a natural order.</p>
+        <ul>
+          <li>Gender (e.g., Male, Female)</li>
+          <li>Color (e.g., Red, Blue, Green)</li>
+          <li>Type of Car (e.g., Sedan, SUV, Coupe)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Normal Distribution Explanation -->
+    <div class="normality">
+      <h3>Understanding Normal Distribution:</h3>
+      <p>The normal distribution is a symmetric probability distribution characterized by a bell-shaped curve. In this distribution, most data points cluster around the mean, with fewer occurrences as you move away from the mean.</p>
+      
+      <p><strong>How to Assess Normality:</strong></p>
+      <ul>
+        <li><strong>Visual Inspection:</strong> Plot a histogram to check if the data forms a bell-shaped curve, indicating normality.</li>
+        <li><strong>Q-Q Plot:</strong> Use a quantile-quantile (Q-Q) plot to visually assess if the data follows a normal distribution.</li>
+        <li><strong>Statistical Tests:</strong> The Shapiro-Wilk test can be used to formally test for normality. A significant result suggests the data is not normally distributed.</li>
+      </ul>
+    </div>
+
+    <!-- Testing Goals Explanation -->
+    <div class="testing-goals">
+      <h3>Understanding the Goal of Your Test:</h3>
+      <p>It's important to clearly define the purpose of your analysis to choose the correct statistical test. Here are the three main categories:</p>
+      <ul>
+        <li><strong>Testing for Differences:</strong> When you want to compare groups to see if there are significant differences in their values. For example:
+          <ul>
+            <li>Comparing the average test scores of two different teaching methods (Two groups, continuous data).</li>
+            <li>Testing if three different diets lead to different weight loss outcomes (More than two groups, continuous data).</li>
+          </ul>
+        </li>
+        <li><strong>Testing for Relationships:</strong> When you're examining if and how two continuous variables are related to each other. For example:
+          <ul>
+            <li>Exploring the relationship between height and weight (Continuous data).</li>
+            <li>Investigating how advertising spend affects sales (Continuous data).</li>
+          </ul>
+        </li>
+        <li><strong>Testing for Association:</strong> When you're analyzing if two categorical variables are associated with each other, meaning one variable's categories are linked with the other’s categories. For example:
+          <ul>
+            <li>Testing if gender is associated with voting preference (Categorical data).</li>
+            <li>Examining the relationship between a customer’s preferred type of product and their region (Categorical data).</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+  <script>
+    function determineTest() {
+      const dataType = document.getElementById('data-type').value;
+      const numGroups = document.getElementById('num-groups').value;
+      const distribution = document.getElementById('distribution').value;
+      const testGoal = document.getElementById('test-goal').value;
+
+      let recommendedTest = '';
+
+      // Check the data type
+      if (dataType === 'categorical') {
+        recommendedTest = 'Chi-Square Test';
+      } else if (dataType === 'continuous') {
+        // Handling number of groups
+        if (numGroups === 'two') {
+          // Check for distribution type
+          if (distribution === 'yes') {
+            recommendedTest = testGoal === 'differences' ? 'Independent t-test' : 'Pearson Correlation';
+          } else {
+            recommendedTest = testGoal === 'differences' ? 'Mann-Whitney U' : 'Spearman Rank Correlation';
+          }
+        } else {
+          // More than two groups
+          if (distribution === 'yes') {
+            recommendedTest = testGoal === 'differences' ? 'One-Way ANOVA' : 'Multiple Linear Regression';
+          } else {
+            recommendedTest = testGoal === 'differences' ? 'Kruskal-Wallis H' : 'Spearman Rank Correlation';
+          }
+        }
+      }
+
+      // Show result
+      const resultDiv = document.getElementById('result');
+      resultDiv.style.display = 'block';
+      document.getElementById('test-name').textContent = `Recommended Test: ${recommendedTest}`;
+    }
+  </script>
+</body>
+</html>
